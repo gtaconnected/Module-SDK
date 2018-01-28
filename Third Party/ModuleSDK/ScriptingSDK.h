@@ -73,7 +73,8 @@ namespace Galactic3D
 		virtual bool CheckNumber(size_t Index, double* pValue) = 0;
 		virtual const char* CheckString(size_t Index, size_t* pLength = nullptr)=0;
 		virtual bool CheckVector2D(size_t Index, Math::Vector2D& vec)=0;
-		virtual bool CheckVector3D(size_t Index, Math::Vector3D& vec)=0;
+		virtual bool CheckVector3D(size_t Index, Math::Vector3D& vec) = 0;
+		virtual bool CheckMatrix4x4(size_t Index, Math::Matrix4x4& mat) = 0;
 		virtual bool CheckClass(ReflectedClass* pClass, size_t Index, bool bNull, Referenceable** ppReferenceable)=0;
 		template<class T> bool CheckClass(ReflectedClass* pClass, size_t Index, bool bNull, T** ppReferenceable)
 		{
@@ -83,7 +84,8 @@ namespace Galactic3D
 			*ppReferenceable = static_cast<T*>(pReferenceable);
 			return true;
 		}
-		virtual CFunction* CheckFunction(size_t Index)=0;
+		virtual CFunction* CheckFunction(size_t Index) = 0;
+		//virtual Stream* CheckStream(size_t Index) = 0;
 		virtual bool GetThis(ReflectedClass* pClass, Referenceable** ppReferenceable)=0;
 		template<class T> bool GetThis(ReflectedClass* pClass, T** ppReferenceable)
 		{
