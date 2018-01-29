@@ -16,6 +16,7 @@ namespace Galactic3D
 	class ReflectedClass;
 	class ReflectedNamespace;
 	class CFunction;
+	class Stream;
 
 	namespace Math
 	{
@@ -86,7 +87,7 @@ namespace Galactic3D
 			return true;
 		}
 		virtual CFunction* CheckFunction(size_t Index) = 0;
-		//virtual Stream* CheckStream(size_t Index) = 0;
+		virtual Stream* CheckStream(size_t Index) = 0;
 		virtual bool GetThis(ReflectedClass* pClass, Referenceable** ppReferenceable)=0;
 		template<class T> bool GetThis(ReflectedClass* pClass, T** ppReferenceable)
 		{
