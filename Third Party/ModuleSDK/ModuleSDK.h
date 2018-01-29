@@ -5,6 +5,7 @@
 #endif
 
 #include <SDL.h>
+#include "GalacticReference.h"
 #include "ScriptingSDK.h"
 
 #define GAlloc(Size) SDL_malloc(Size)
@@ -50,6 +51,72 @@ namespace Galactic3D
 		bool RegisterFunction(const ScriptFunction* pFunction, void* pUser);
 		bool AddProperty(void* pUser, const char* pszName, unsigned char Type, const ScriptFunction* pGetter, const ScriptFunction* pSetter = nullptr);
 		ReflectedClass* NewClass(ReflectedClassDecl* pClassDecl, ReflectedClass* pParent = nullptr);
+	};
+
+	// TODO: Implement these
+	class Stream;
+	class Pool;
+
+	enum eArgumentType
+	{
+		ARGUMENT_NIL,
+		ARGUMENT_BOOLEAN,
+		ARGUMENT_STRING,
+		ARGUMENT_TABLE,//NEVER USED
+		ARGUMENT_INTEGER,
+		ARGUMENT_FLOAT,
+		ARGUMENT_ELEMENT,//NETWORK ONLY!
+		ARGUMENT_REFERENCEABLE,
+		ARGUMENT_VECTOR2D,
+		ARGUMENT_VECTOR3D,
+		ARGUMENT_VECTOR4D,
+		ARGUMENT_MATRIX4X4,
+		ARGUMENT_UNDEFINED,
+		ARGUMENT_LUAREF,//SPECIAL; GETS SWALLOWED!
+		ARGUMENT_JSVALUE,//SPECIAL; GETS SWALLOWED!
+		ARGUMENT_LONGINTEGER,//64-bit
+		ARGUMENT_DOUBLE,//64-bit
+		ARGUMENT_ARRAY,
+		ARGUMENT_MAP,//NEVER USED BUT RESERVED
+		ARGUMENT_FUNCTION,//GETS SWALLOWED!
+		ARGUMENT_SQREF,//SPECIAL; GETS SWALLOWED!
+	};
+
+	class CArgument
+	{
+	public:
+		virtual ~CArgument(void) {}
+
+		virtual bool Read(Stream* pStream) = 0;
+		virtual bool GetSize(size_t& Size) = 0;
+		virtual bool Write(Stream* pStream) = 0;
+
+		virtual CArgument* Clone(void) const = 0;
+		virtual CArgument* Clone(Pool* pPool) const = 0;
+
+		unsigned char GetType(void) const;
+		const char* GetTypeName(void) const;
+
+		bool IsNull(void) const;
+		bool IsBoolean(void) const;
+		bool IsString(void) const;
+		bool IsReferenceable(void) const;
+		bool IsVector2D(void) const;
+		bool IsVector3D(void) const;
+		bool IsVector4D(void) const;
+		bool IsMatrix4x4(void) const;
+		bool IsNumber(void) const;
+		bool IsArray(void) const;
+		bool IsFunction(void) const;
+
+		bool ToBoolean(void) const;
+		const char* ToString(size_t* pLength = nullptr) const;
+		Referenceable* ToReferenceable(ReflectedClass* pClass) const;
+		Referenceable* ToReferenceable(void) const;
+		void ToVector2D(Math::Vector2D& vec) const;
+		void ToVector3D(Math::Vector3D& vec) const;
+		void ToVector4D(Math::Vector4D& vec) const;
+		void ToMatrix4x4(Math::Matrix4x4& mat) const;
 	};
 
 	namespace Reflection

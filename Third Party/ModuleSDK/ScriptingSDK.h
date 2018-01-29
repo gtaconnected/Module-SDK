@@ -21,6 +21,7 @@ namespace Galactic3D
 	{
 		class Vector2D;
 		class Vector3D;
+		class Vector4D;
 		class Matrix4x4;
 	};
 
@@ -144,6 +145,7 @@ namespace Galactic3D
 		void(*SetPrivate)(Referenceable* pReferenceable, void* pPrivate);
 		void*(*GetPrivate)(Referenceable* pReferenceable);
 
+		// Reflection
 		Referenceable*(*Clone)(Referenceable* pReferenceable); // Must release
 		bool(*Move)(Referenceable* pReferenceable, Referenceable* pNewReferenceable); // Invalidates this class
 		char*(*ToString)(Referenceable* pReferenceable, size_t* pLength); // Must free the string
@@ -178,5 +180,28 @@ namespace Galactic3D
 		bool(*RegisterNamespaceFunction)(ReflectedNamespace* pNamespace, const ScriptFunction* pFunction, void* pUser);
 		bool(*AddNamespaceProperty)(ReflectedNamespace* pNamespace, void* pUser, const char* pszName, unsigned char Type, const ScriptFunction* pGetter, const ScriptFunction* pSetter);
 		ReflectedClass*(*NewClass)(ReflectedNamespace* pNamespace, ReflectedClassDecl* pClassDecl, ReflectedClass* pParent);
+
+		// CArgument
+		unsigned char(*Argument_GetType)(const CArgument* pArgument);
+		const char*(*Argument_GetTypeName)(const CArgument* pArgument);
+
+		bool(*Argument_ToBoolean)(const CArgument* pArgument);
+		const char*(*Argument_ToString)(const CArgument* pArgument, size_t* pLength);
+		Referenceable*(*Argument_ToReferenceableClass)(const CArgument* pArgument, ReflectedClass* pClass);
+		Referenceable*(*Argument_ToReferenceable)(const CArgument* pArgument);
+		void(*Argument_ToVector2D)(const CArgument* pArgument, Math::Vector2D& vec);
+		void(*Argument_ToVector3D)(const CArgument* pArgument, Math::Vector3D& vec);
+		void(*Argument_ToVector4D)(const CArgument* pArgument, Math::Vector4D& vec);
+		void(*Argument_ToMatrix4x4)(const CArgument* pArgument, Math::Matrix4x4& mat);
+		void(*Argument_ToSint8)(const CArgument* pArgument, Sint8* pValue);
+		void(*Argument_ToUint8)(const CArgument* pArgument, Uint8* pValue);
+		void(*Argument_ToSint16)(const CArgument* pArgument, Sint16* pValue);
+		void(*Argument_ToUint16)(const CArgument* pArgument, Uint16* pValue);
+		void(*Argument_ToSint32)(const CArgument* pArgument, Sint32* pValue);
+		void(*Argument_ToUint32)(const CArgument* pArgument, Uint32* pValue);
+		void(*Argument_ToSint64)(const CArgument* pArgument, Sint64* pValue);
+		void(*Argument_ToUint64)(const CArgument* pArgument, Uint64* pValue);
+		void(*Argument_ToFloat)(const CArgument* pArgument, float* pValue);
+		void(*Argument_ToDouble)(const CArgument* pArgument, double* pValue);
 	} ModuleAPI;
 };

@@ -7,3 +7,5 @@
 #endif
 
 #include <ModuleSDK.h>
+
+using namespace Galactic3D;

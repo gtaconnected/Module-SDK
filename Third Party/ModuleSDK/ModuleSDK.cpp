@@ -103,6 +103,152 @@ ReflectedClass* ReflectedNamespace::NewClass(ReflectedClassDecl* pClassDecl, Ref
 	return g_pAPI->NewClass(this, pClassDecl, pParent);
 }
 
+// Argument
+
+unsigned char CArgument::GetType(void) const
+{
+	return g_pAPI->Argument_GetType(this);
+}
+
+const char* CArgument::GetTypeName(void) const
+{
+	return g_pAPI->Argument_GetTypeName(this);
+}
+
+bool CArgument::IsNull(void) const
+{
+	unsigned char Type = GetType();
+	if (Type == ARGUMENT_NIL || Type == ARGUMENT_UNDEFINED)
+		return true;
+	return false;
+}
+
+bool CArgument::IsBoolean(void) const
+{
+	unsigned char Type = GetType();
+	if (Type == ARGUMENT_BOOLEAN)
+		return true;
+	return false;
+}
+
+bool CArgument::IsString(void) const
+{
+	unsigned char Type = GetType();
+	if (Type == ARGUMENT_STRING)
+		return true;
+	return false;
+}
+
+bool CArgument::IsReferenceable(void) const
+{
+	unsigned char Type = GetType();
+	if (Type == ARGUMENT_REFERENCEABLE)
+		return true;
+	return false;
+}
+
+bool CArgument::IsVector2D(void) const
+{
+	unsigned char Type = GetType();
+	if (Type == ARGUMENT_VECTOR2D)
+		return true;
+	return false;
+}
+
+bool CArgument::IsVector3D(void) const
+{
+	unsigned char Type = GetType();
+	if (Type == ARGUMENT_VECTOR3D)
+		return true;
+	return false;
+}
+
+bool CArgument::IsVector4D(void) const
+{
+	unsigned char Type = GetType();
+	if (Type == ARGUMENT_VECTOR4D)
+		return true;
+	return false;
+}
+
+bool CArgument::IsMatrix4x4(void) const
+{
+	unsigned char Type = GetType();
+	if (Type == ARGUMENT_MATRIX4X4)
+		return true;
+	return false;
+}
+
+bool CArgument::IsNumber(void) const
+{
+	unsigned char Type = GetType();
+	if (Type == ARGUMENT_INTEGER)
+		return true;
+	else if (Type == ARGUMENT_LONGINTEGER)
+		return true;
+	else if (Type == ARGUMENT_FLOAT)
+		return true;
+	else if (Type == ARGUMENT_DOUBLE)
+		return true;
+	return false;
+}
+
+bool CArgument::IsArray(void) const
+{
+	unsigned char Type = GetType();
+	if (Type == ARGUMENT_ARRAY)
+		return true;
+	return false;
+}
+
+bool CArgument::IsFunction(void) const
+{
+	unsigned char Type = GetType();
+	if (Type == ARGUMENT_FUNCTION)
+		return true;
+	return false;
+}
+
+bool CArgument::ToBoolean(void) const
+{
+	return g_pAPI->Argument_ToBoolean(this);
+}
+
+const char* CArgument::ToString(size_t* pLength) const
+{
+	return g_pAPI->Argument_ToString(this, pLength);
+}
+
+Referenceable* CArgument::ToReferenceable(ReflectedClass* pClass) const
+{
+	return g_pAPI->Argument_ToReferenceableClass(this, pClass);
+}
+
+Referenceable* CArgument::ToReferenceable(void) const
+{
+	return g_pAPI->Argument_ToReferenceable(this);
+}
+
+void CArgument::ToVector2D(Math::Vector2D& vec) const
+{
+	return g_pAPI->Argument_ToVector2D(this, vec);
+}
+
+void CArgument::ToVector3D(Math::Vector3D& vec) const
+{
+	return g_pAPI->Argument_ToVector3D(this, vec);
+}
+
+void CArgument::ToVector4D(Math::Vector4D& vec) const
+{
+	return g_pAPI->Argument_ToVector4D(this, vec);
+}
+
+void CArgument::ToMatrix4x4(Math::Matrix4x4& mat) const
+{
+	return g_pAPI->Argument_ToMatrix4x4(this, mat);
+}
+
 // Reflection
 
 const char* Reflection::GetLastError(void)
@@ -171,6 +317,13 @@ Referenceable* Reflection::New(ReferenceableFinaliser Finaliser, ReflectedClass*
 }
 
 // SDL
+
+extern SDL_AssertState SDLCALL SDL_ReportAssertion(SDL_AssertData *,
+	const char *,
+	const char *, int)
+{
+	return SDL_ASSERTION_IGNORE;
+}
 
 extern void *SDLCALL SDL_malloc(size_t size)
 {
